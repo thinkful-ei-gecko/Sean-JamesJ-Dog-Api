@@ -7,16 +7,18 @@
 // Fetch data from dogapi
 
 let getImages = function(num = 3) {
-  fetch(`https://dog.ceo/api/breeds/image/random/${num}`)
+  return fetch(`https://dog.ceo/api/breeds/image/random/${num}`)
     .then((response) => response.json())
-    .then((jsonData) => returnImages(jsonData)); 
+    .then((jsonData) => {
+      return returnImages(jsonData);
+    }); 
 };
 
 let handleDogFormSubmit = function() {
   $('.js-dog-gen').on('submit', e => {
     e.preventDefault();
     let count = $('#dog-count').val();
-    getImages(count);
+    getImages(count).then((response) => $('.js-dog-grid').html(response));
   });
 };
 
@@ -25,7 +27,8 @@ let returnImages = function(jsonData) {
   for (let i = 0; i < jsonData.message.length; i++){
     imageString += `<img src="${jsonData.message[i]}" alt="dog image ${i}" />`;
   }
-  $('.js-dog-grid').html(imageString);
+  return imageString;
+  // $('.js-dog-grid').html(imageString);
 };
 
 // event listeners
