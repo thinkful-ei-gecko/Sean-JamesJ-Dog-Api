@@ -12,4 +12,14 @@ let getImages = function(num = 3) {
     .then((jsonData) => console.log(jsonData));
 };
 
-getImages();
+let handleDogFormSubmit = function() {
+  $('.js-dog-gen').on('submit', e => {
+    e.preventDefault();
+    let count = $('#dog-count').val();
+    getImages(count);
+    
+  });
+};
+
+// event listeners
+handleDogFormSubmit();
