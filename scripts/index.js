@@ -12,7 +12,7 @@ let getImages = function(num = 3) {
     .then((jsonData) => returnImages(jsonData)); 
 };
 
-let handleDogFormSubmit = function() {
+let handleDogCountFormSubmit = function() {
   $('.js-dog-gen').on('submit', e => {
     e.preventDefault();
     let count = $('#dog-count').val();
@@ -28,5 +28,40 @@ let returnImages = function(jsonData) {
   $('.js-dog-grid').html(imageString);
 };
 
+/**
+ * Get a random doggo of a certain breed and render in DOM
+ * 
+ */
+
+let getDogOfBreed = function(breed) {
+  fetch(`https://dog.ceo/api/breed/${breed}/images/random`)
+    .then(response => response.json())
+    .then(jsonData => returnBreedImage(jsonData))
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+let returnBreedImage = function(jsonData) {
+  if(jsonData.status && jsonData.status === 'error') {
+    $('.js-dog-breed').html(
+      `<p>${jsonData.message}</p>`
+    );
+  } else {
+    $('.js-dog-breed').html(
+      `<img src="${jsonData.message}" alt="dog image" />`
+    );
+  }
+};
+
+let handleDogBreedFormSubmit = function() {
+  $('.js-dog-breed-gen').on('submit', e => {
+    e.preventDefault();
+    let breed = $('#dog-breed').val();
+    getDogOfBreed(breed);
+  });
+};
+
 // event listeners
-handleDogFormSubmit();
+handleDogCountFormSubmit();
+handleDogBreedFormSubmit();
