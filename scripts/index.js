@@ -9,11 +9,7 @@
 let getImages = function(num = 3) {
   fetch(`https://dog.ceo/api/breeds/image/random/${num}`)
     .then((response) => response.json())
-    .then((jsonData) => 
-        {console.log(jsonData);
-          console.log("Images should be here", returnImages(jsonData));
-          });
-
+    .then((jsonData) => returnImages(jsonData)); 
 };
 
 let handleDogFormSubmit = function() {
@@ -21,16 +17,15 @@ let handleDogFormSubmit = function() {
     e.preventDefault();
     let count = $('#dog-count').val();
     getImages(count);
-    
   });
 };
 
-let returnImages = function(images) {
+let returnImages = function(jsonData) {
   let imageString ='';
-  for (let i = 0; i < images.message.length; i++){
-    imageString += `<img src="${images.message[i]} alt = "dog image ${i}" />`;
+  for (let i = 0; i < jsonData.message.length; i++){
+    imageString += `<img src="${jsonData.message[i]}" alt="dog image ${i}" />`;
   }
-  return imageString;
+  $('.js-dog-grid').html(imageString);
 };
 
 // event listeners
